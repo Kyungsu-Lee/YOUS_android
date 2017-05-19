@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,6 +37,9 @@ public class Activity_Start extends Activity {
         ScreenParameter.setScreenparam_y(ScreenSize().y / ScreenParameter.getDefaultsizeY());
         ScreenParameter.setScreen_x(ScreenSize().x);
         ScreenParameter.setScreen_y(ScreenSize().y);
+
+        YousResource.KOPUB_LIGHT = Typeface.createFromAsset(getAssets(), "font/KoPubDotum_Pro Light.otf");
+        YousResource.KOPUB_MID = Typeface.createFromAsset(getAssets(), "font/KoPubDotum_Pro Medium.otf");
 
         main = (RelativeLayout)findViewById(R.id.main);
         main.setBackgroundColor(Color.WHITE);

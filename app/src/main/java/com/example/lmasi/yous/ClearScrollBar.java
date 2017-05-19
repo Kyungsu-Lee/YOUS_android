@@ -2,7 +2,6 @@ package com.example.lmasi.yous;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.widget.RelativeLayout;
  * Created by lmasi on 2017. 5. 18..
  */
 
-public class ScrollBar extends RelativeLayout {
+public class ClearScrollBar extends RelativeLayout {
 
     private ImageView scrollLine;
     private RelativeLayout scrollCircle;
@@ -30,7 +29,7 @@ public class ScrollBar extends RelativeLayout {
     private final int DEFAULT_CONTENT_SIZE    = 30;
     private final int padding                 = 10;
 
-    public ScrollBar(Context context, char alphabet, String top, final String bottom)
+    public ClearScrollBar(Context context, char alphabet, String top, final String bottom)
     {
         super(context);
 
@@ -106,7 +105,7 @@ public class ScrollBar extends RelativeLayout {
                     float x = event.getX();
                     float y = event.getY();
 
-                    if((scrollLayout.getY() <= y) && (y <= ScrollBar.this.bottom.getY()))
+                    if((scrollLayout.getY() <= y) && (y <= ClearScrollBar.this.bottom.getY()))
                     {
                         float rate = ((Math.abs(y - scrollLayout.getY())) / scrollLine.getHeight()) * 100;
 
@@ -119,21 +118,21 @@ public class ScrollBar extends RelativeLayout {
         });
     }
 
-    public ScrollBar addRule(int verb)
+    public ClearScrollBar addRule(int verb)
     {
         this.setLayoutParams(params.addRules(verb));
 
         return this;
     }
 
-    public ScrollBar addRule(int verb, int view)
+    public ClearScrollBar addRule(int verb, int view)
     {
         this.setLayoutParams(params.addRules(verb, view));
 
         return this;
     }
 
-    public ScrollBar setMargin(double left, double top, double right, double bottom)
+    public ClearScrollBar setMargin(double left, double top, double right, double bottom)
     {
         this.setLayoutParams(params.setMargin(left, top, right, bottom));
 
