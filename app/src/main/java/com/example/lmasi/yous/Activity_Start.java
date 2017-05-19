@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -30,6 +31,7 @@ public class Activity_Start extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
 
@@ -45,7 +47,7 @@ public class Activity_Start extends Activity {
         main.setBackgroundColor(Color.WHITE);
 
         ImageView logo = new ImageView(getApplicationContext());
-        logo.setBackground(getResources().getDrawable(R.drawable.logo));
+        logo.setBackground(getResources().getDrawable(R.drawable.loading));
         logo.setLayoutParams(new YousParameter(131, 140).addRules(RelativeLayout.CENTER_IN_PARENT));
         main.addView(logo);
 
@@ -75,19 +77,34 @@ public class Activity_Start extends Activity {
 
     private void toNextActivity()
     {
+        try
+        {
+            DbResource.conn = new DBConect(this, "yous.db", null, 1);
+            DbResource.db = DbResource.conn.getWritableDatabase();
+
+            DbResource.insert("login", false);
+            DbResource.insert_cId("");
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        final boolean loginFlag = DbResource.get("login");
+
         Handler hd = new Handler()
         {
             @Override
             public void handleMessage(Message msg)
             {
 
-                if(Profile.getCurrentProfile() != null)
+                if(loginFlag || Profile.getCurrentProfile() != null)
                 {
                     startActivity(new Intent(Activity_Start.this, Activity_Main.class));
+                    SystemManager.setIsLogged(true);
                     finish();
                     return;
                 }
-
+                SystemManager.setIsLogged(false);
                 startActivity(new Intent(Activity_Start.this, Activity_home.class));
                // startActivity(new Intent(Activity_Start.this, Activity_SignUp2.class));
                 finish();

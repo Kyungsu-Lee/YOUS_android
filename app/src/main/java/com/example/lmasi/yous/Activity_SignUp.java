@@ -34,6 +34,7 @@ public class Activity_SignUp extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 

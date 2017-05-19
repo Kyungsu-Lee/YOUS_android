@@ -28,7 +28,7 @@ public class ScrollBar extends RelativeLayout {
 
     private final int DEFALUT_TITLE_SIZE      = 35;
     private final int DEFAULT_CONTENT_SIZE    = 30;
-    private final int padding                 = 10;
+    private final int padding                 = 20;
 
     public ScrollBar(Context context, char alphabet, String top, final String bottom)
     {
@@ -41,14 +41,16 @@ public class ScrollBar extends RelativeLayout {
                                     .addRules(RelativeLayout.CENTER_HORIZONTAL)
         );
         this.top.setGravity(Gravity.CENTER);
+        this.top.setTextSize(27);
+        this.top.setLineSpacing(0, 1.2f);
         this.top.setId(this.top.hashCode());
         this.addView(this.top);
 
         scrollLayout = new RelativeLayout(getContext());
-        scrollLayout.setLayoutParams(new YousParameter(130, 558)
+        scrollLayout.setLayoutParams(new YousParameter(130, 538)
                                         .addRules(RelativeLayout.BELOW, this.top.getId())
                                         .addRules(RelativeLayout.CENTER_HORIZONTAL)
-                                        .setMargin(0, padding + 70)
+                                        .setMargin(0, padding)
 
         );
         scrollLayout.setId(scrollLayout.hashCode());
@@ -57,7 +59,7 @@ public class ScrollBar extends RelativeLayout {
 
         scrollLine = new ImageView(getContext());
         scrollLine.setBackground(getResources().getDrawable(R.drawable.scroll_line));
-        scrollLine.setLayoutParams(new YousParameter(4, 558)
+        scrollLine.setLayoutParams(new YousParameter(4, 538)
                                     .addRules(RelativeLayout.CENTER_IN_PARENT)
         );
         scrollLine.setId(scrollLine.hashCode());
@@ -89,7 +91,9 @@ public class ScrollBar extends RelativeLayout {
                 .setMargin(0, padding)
         );
         this.bottom.setGravity(Gravity.CENTER);
-        this.top.setId(this.bottom.hashCode());
+        this.bottom.setId(this.bottom.hashCode());
+        this.bottom.setTextSize(27);
+        this.bottom.setLineSpacing(0, 1.2f);
         this.addView(this.bottom);
         scrollCircle.bringToFront();
 
@@ -150,5 +154,26 @@ public class ScrollBar extends RelativeLayout {
     public int getRate()
     {
         return (int)((this.scrollCircle.getY() - scrollLine.getY()) * 1.0f / (scrollLine.getHeight() - scrollCircle.getHeight()) * 100);
+    }
+
+    public void addDot(float rate)
+    {
+        ImageView dot = new ImageView(getContext());
+        dot.setBackground(getResources().getDrawable(R.drawable.dot));
+        dot.setLayoutParams(new YousParameter(15, 15)
+                .addRules(RelativeLayout.CENTER_HORIZONTAL)
+        );
+        scrollLayout.addView(dot);
+        float y = scrollLine.getY() + (scrollLine.getHeight() -  scrollCircle.getHeight()) * (rate / 100.0f);
+
+        dot.setY(y);
+        scrollCircle.bringToFront();
+    }
+
+    public void setClear()
+    {
+        this.scrollCircle.setBackground(getResources().getDrawable(R.drawable.btn_yes));
+        scrollCircle.removeView(alphabet);
+        this.setOnTouchListener(null);
     }
 }

@@ -27,6 +27,7 @@ public class Activity_Summary extends Activity {
 
     RelativeLayout main;
 
+    YousTextView search_title;
     YousTextView search_text;
     YousTextView recent_text;
 
@@ -35,6 +36,7 @@ public class Activity_Summary extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_summary);
 
@@ -77,7 +79,8 @@ public class Activity_Summary extends Activity {
         titleView.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                                         .addRules(RelativeLayout.CENTER_IN_PARENT)
                                 );
-        titleView.setTextColor(yColor.yrgb(66, 66, 66));
+        titleView.setTextColor(Color.parseColor("#666666"));
+        titleView.setTypeface(YousResource.KOPUB_MID);
         titleLayout.addView(titleView);
 
         YousTextView search = new YousTextView(getApplicationContext());
@@ -89,15 +92,15 @@ public class Activity_Summary extends Activity {
                 .setMargin(0, 80)
         );
         search.setId(search.hashCode());
-        search.setTextColor(yColor.yrgb(66, 66, 66));
+        search.setTextColor(Color.rgb(102, 102, 102));
         scrollView.addView(search);
 
         ImageView line1 = new ImageView(getApplicationContext());
         line1.setBackground(getResources().getDrawable(R.drawable.content_line));
-        line1.setLayoutParams(new YousParameter(1, 128)
+        line1.setLayoutParams(new YousParameter(1, 180)
                                 .addRules(RelativeLayout.CENTER_HORIZONTAL)
                                 .addRules(RelativeLayout.BELOW, search.getId())
-                                .setMargin(0, 48)
+                                .setMargin(0, 40)
                             );
         line1.setId(line1.hashCode());
         scrollView.addView(line1);
@@ -105,23 +108,41 @@ public class Activity_Summary extends Activity {
         RelativeLayout content_box = new RelativeLayout(getApplicationContext());
         content_box.setBackgroundColor(Color.rgb(242, 242, 242));
         content_box.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                                    .addRules(RelativeLayout.BELOW, line1.getId())
                                     .addRules(RelativeLayout.CENTER_HORIZONTAL)
+                                    .addRules(RelativeLayout.BELOW, line1.getId())
                                     .setMargin(0, 48)
         );
-        int margin = 50;
+        int margin = 56;
         content_box.setPadding(margin, margin, margin, margin);
         content_box.setId(content_box.hashCode());
         scrollView.addView(content_box);
 
+        RelativeLayout searchd = new RelativeLayout(getApplicationContext());
+        searchd.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).addRules(RelativeLayout.CENTER_VERTICAL));
+        content_box.addView(searchd);
+
+        search_title = new YousTextView(getApplicationContext());
+        search_title.setTextSize(32);
+        search_title.setText("노홍철 음주운전, 그리고 무한도전 복귀");
+        search_title.setLayoutParams(new YousParameter(600, ViewGroup.LayoutParams.WRAP_CONTENT)
+                .setMargin(0, 20, 0, 0) // 위아래옆 패딩 동일하게!
+        );
+        search_title.setId(search_title.hashCode());
+        search_title.setTypeface(YousResource.KOPUB_MID);
+        search_title.setTextColor(Color.rgb(102, 102, 102));
+        searchd.addView(search_title);
+
         search_text = new YousTextView(getApplicationContext());
-        search_text.setTextSize(30);
-        search_text.setLayoutParams(new YousParameter(600, ViewGroup.LayoutParams.WRAP_CONTENT)
-                .addRules(RelativeLayout.CENTER_IN_PARENT)
+        search_text.setTextSize(28);
+        search_text.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                .addRules(RelativeLayout.CENTER_HORIZONTAL)
+                .addRules(RelativeLayout.BELOW, search_title.getId())
+                .setMargin(0, 28, 0, 0)
         );
         search_text.setId(search_text.hashCode());
+        search_text.setLineSpacing(0, 1.4f);
         search_text.setTextColor(Color.rgb(102, 102, 102));
-        content_box.addView(search_text);
+        searchd.addView(search_text);
         new Thread()
         {
             private StringBuilder builder;
@@ -161,26 +182,28 @@ public class Activity_Summary extends Activity {
 
         YousTextView recent = new YousTextView(getApplicationContext());
         recent.setText("정황을 간단히 보자면");
-        recent.setTextSize(50);
+        recent.setTextSize(32);
+        recent.setTypeface(YousResource.KOPUB_MID);
         recent.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.CENTER_HORIZONTAL)
                 .addRules(RelativeLayout.BELOW, line2.getId())
-                .setMargin(0, 80)
+                .setMargin(0, 55)
         );
         recent.setId(recent.hashCode());
-        recent.setTextColor(yColor.yrgb(66, 66, 66));
+        recent.setTextColor(Color.parseColor("#666666"));
         scrollView.addView(recent);
 
         recent_text = new YousTextView(getApplicationContext());
-        recent_text.setTextSize(30);
+        recent_text.setTextSize(27);
         recent_text.setLayoutParams(new YousParameter(600, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.CENTER_IN_PARENT)
                 .addRules(RelativeLayout.BELOW, recent.getId())
-                .setMargin(0, 40)
+                .setMargin(0, 50)
         );
         recent_text.setGravity(Gravity.CENTER);
         recent_text.setTextColor(Color.rgb(102, 102, 102));
         recent_text.setId(recent_text.hashCode());
+        recent_text.setLineSpacing(0, 1.45f);
         scrollView.addView(recent_text);
         new Thread()
         {
@@ -209,7 +232,7 @@ public class Activity_Summary extends Activity {
             }
         }.start();
 
-        ImageView btn_ok = new ImageView(getApplicationContext());
+        ImageView btn_ok = new ImageView(getApplicationContext());  //title과 사이즈 동일하게
         btn_ok.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 157)
                 .addRules(RelativeLayout.CENTER_HORIZONTAL)
                 .addRules(RelativeLayout.BELOW, recent_text.getId())
@@ -237,5 +260,11 @@ public class Activity_Summary extends Activity {
 
 
         main.addView(scrollView);
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, Activity_Main.class));
+        finish();
     }
 }

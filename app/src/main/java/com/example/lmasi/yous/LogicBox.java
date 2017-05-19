@@ -101,7 +101,7 @@ public class LogicBox extends RelativeLayout {
                             if(line == null) break;
 
                             Log.d("aaaa", line);
-                            contents += line;
+                            contents += line + "\n\n ";
                         }
                         br.close();
                     }

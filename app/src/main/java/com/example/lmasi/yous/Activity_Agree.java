@@ -22,11 +22,16 @@ public class Activity_Agree extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_agree);
 
         title = getIntent().getStringExtra("title");
         index = getIntent().getIntExtra("index", 0);
+
+      //  title = "贊";
 
         main = (RelativeLayout)findViewById(R.id.main);
         main.setBackgroundColor(Color.rgb(255, 255,255));
@@ -67,7 +72,7 @@ public class Activity_Agree extends Activity {
 
                 if(event.getAction() == MotionEvent.ACTION_UP)
                 {
-                    startActivity(new Intent(Activity_Agree.this, Activity_Main.class));
+                    startActivity(new Intent(Activity_Agree.this, Activity_Summary.class).putExtra("title", title).putExtra("index", index));
                     finish();
                 }
                 return true;
@@ -80,9 +85,9 @@ public class Activity_Agree extends Activity {
         titleView.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.CENTER_IN_PARENT)
         );
-        titleView.setTextColor(Color.rgb(242, 242, 242));
+        titleView.setTextColor(Color.parseColor("#F2F2F2"));
+        titleView.setTypeface(YousResource.KOPUB_MID);
         titleLayout.addView(titleView);
-        titleLayout.setId(titleLayout.hashCode());
 
 
 
@@ -136,5 +141,11 @@ public class Activity_Agree extends Activity {
         main.addView(scrollView);
         main.addView(cover);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+            startActivity(new Intent(this, Activity_Summary.class).putExtra("title", title).putExtra("index", index));
+            finish();
     }
 }

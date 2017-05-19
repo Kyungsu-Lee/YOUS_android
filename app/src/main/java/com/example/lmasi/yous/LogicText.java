@@ -58,6 +58,8 @@ public class LogicText extends RelativeLayout {
         this.title.setGravity(Gravity.LEFT);
         this.title.setId(this.title.hashCode());
         this.addView(this.title);
+        this.title.setTypeface(YousResource.KOPUB_MID);
+        this.title.setTextSize(32);
 
         this.contents = new YousTextView(getContext());
         this.contents.setTextSize(DEFAULT_CONTENT_SIZE);
@@ -65,11 +67,13 @@ public class LogicText extends RelativeLayout {
         this.contents.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.CENTER_HORIZONTAL)
                 .addRules(RelativeLayout.BELOW, this.title.getId())
-                .setMargin(0, 10)
+                .setMargin(0, 28)
         );
         this.contents.setGravity(Gravity.LEFT);
         this.contents.setId(this.contents.hashCode());
         this.addView(this.contents);
+        this.contents.setTextSize(28);
+        this.contents.setLineSpacing(0, 1.4f);
 
 
       //  yousParameter = new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT,343);

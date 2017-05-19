@@ -22,6 +22,8 @@ public class Activity_disagree extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disagree);
 
@@ -80,9 +82,9 @@ public class Activity_disagree extends Activity {
         titleView.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.CENTER_IN_PARENT)
         );
-        titleView.setTextColor(Color.rgb(242, 242, 242));
+        titleView.setTextColor(Color.parseColor("#F2F2F2"));
+        titleView.setTypeface(YousResource.KOPUB_MID);
         titleLayout.addView(titleView);
-        titleLayout.setId(titleLayout.hashCode());
 
 
 
@@ -152,5 +154,11 @@ public class Activity_disagree extends Activity {
 
         main.addView(scrollView);
         main.addView(cover);
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, Activity_Main.class));
+        finish();
     }
 }

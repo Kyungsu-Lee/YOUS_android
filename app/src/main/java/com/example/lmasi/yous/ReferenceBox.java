@@ -21,8 +21,8 @@ import java.net.URL;
 public class ReferenceBox extends RelativeLayout {
 
     private final int padding = 60;
-    private final int DEFALUT_TITLE_SIZE      = 35;
-    private final int DEFAULT_CONTENT_SIZE    = 30;
+    private final int DEFALUT_TITLE_SIZE      = 30;
+    private final int DEFAULT_CONTENT_SIZE    = 28;
 
     ImageView line;
 
@@ -38,7 +38,7 @@ public class ReferenceBox extends RelativeLayout {
 
         line = new ImageView(getContext());
         line.setBackgroundColor(Color.rgb(102, 102, 102));
-        line.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 2).addRules(RelativeLayout.CENTER_HORIZONTAL));
+        line.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 1).addRules(RelativeLayout.CENTER_HORIZONTAL));
         line.setId(line.hashCode());
         this.addView(line);
 
@@ -46,6 +46,7 @@ public class ReferenceBox extends RelativeLayout {
         title.setText("출처");
         title.setTextColor(Color.rgb(102, 102, 102));
         title.setTextSize(DEFALUT_TITLE_SIZE);
+        title.setTypeface(YousResource.KOPUB_MID);
         title.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                                     .addRules(RelativeLayout.BELOW, line.getId())
                                     .setMargin(0, padding, 0, 0)
@@ -109,9 +110,10 @@ public class ReferenceBox extends RelativeLayout {
             contents.setText(text);
             contents.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                                         .addRules(RelativeLayout.BELOW, title.getId())
-                                        .setMargin(0, 5, 0, 0)
+                                        .setMargin(0, 30, 0, 0)
             );
             contents.setTextColor(Color.rgb(102, 102, 102));
+            contents.setLineSpacing(0, 1.4f);
             ReferenceBox.this.addView(contents);
         }
 

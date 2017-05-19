@@ -1,6 +1,7 @@
 package com.example.lmasi.yous;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -15,6 +16,9 @@ public class YousTextView extends TextView {
 
     public YousTextView(Context context) {
         super(context);
+
+        setTextColor(Color.rgb(102, 102, 102));
+        setTypeface(YousResource.KOPUB_LIGHT);
     }
 
     private Handler hd;

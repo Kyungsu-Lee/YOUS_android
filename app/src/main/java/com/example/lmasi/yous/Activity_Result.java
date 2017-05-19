@@ -42,8 +42,13 @@ public class Activity_Result extends Activity {
 
     RelativeLayout scrolls;
 
+    ScrollBar[] scrollBars;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
@@ -94,7 +99,9 @@ public class Activity_Result extends Activity {
                 .addRules(RelativeLayout.CENTER_IN_PARENT)
         );
         titleView.setTextColor(Color.rgb(102, 102, 102));
+        titleView.setTypeface(YousResource.KOPUB_MID);
         titleLayout.addView(titleView);
+
 
         YousTextView titleTextView = new YousTextView(getApplicationContext());
         titleTextView.setText("자 이제 " + title + "에 대한 너의 입장을 보여줘!");
@@ -103,11 +110,15 @@ public class Activity_Result extends Activity {
                                         .addRules(RelativeLayout.BELOW, titleLayout.getId())
                                         .setMargin(0, 10)
         );
-        titleTextView.setTextSize(49);
+        titleTextView.setTextSize(50);
+        titleTextView.setLineSpacing(0, 1.3f);
+        titleTextView.setTextColor(Color.rgb(102, 102, 102));
         titleTextView.setTypeface(YousResource.KOPUB_LIGHT);
         titleTextView.setGravity(Gravity.CENTER);
         titleTextView.setId(titleTextView.hashCode());
         scrollView.addView(titleTextView);
+
+
 
         scrolls = new RelativeLayout(getApplicationContext());
         scrolls.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).addRules(RelativeLayout.BELOW, titleTextView.getId()));
@@ -192,16 +203,33 @@ public class Activity_Result extends Activity {
                 scrolls.addView(scrollBar3.addRule(RelativeLayout.RIGHT_OF, scrollBar2.getId()).setMargin(2 * scroll_padding, 0, 0, 0));
               //  scrollBar3.setBackgroundColor(Color.BLUE);
 
+                scrollBars = new ScrollBar[3];
+                scrollBars[0] = scrollBar;
+                scrollBars[1] = scrollBar2;
+                scrollBars[2] = scrollBar3;
 
-                ImageView later = new ImageView(getApplicationContext());
+
+                final ImageView later = new ImageView(getApplicationContext());
                 later.setBackground(getResources().getDrawable(R.drawable.later));
                 later.setLayoutParams(new YousParameter(750/2, 141)
                                         .addRules(RelativeLayout.ALIGN_PARENT_BOTTOM)
                 );
                 later.setId(later.hashCode());
                 main.addView(later);
+                later.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
 
-                ImageView confirm = new ImageView(getApplicationContext());
+                        if(event.getAction() == MotionEvent.ACTION_UP)
+                        {
+                            show_later();
+                        }
+
+                        return true;
+                    }
+                });
+
+                final ImageView confirm = new ImageView(getApplicationContext());
                 confirm.setBackground(getResources().getDrawable(R.drawable.confirm));
                 confirm.setLayoutParams(new YousParameter(750/2, 141)
                         .addRules(RelativeLayout.ALIGN_PARENT_BOTTOM)
@@ -210,10 +238,41 @@ public class Activity_Result extends Activity {
                 main.addView(confirm);
                 confirm.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public boolean onTouch(View v, MotionEvent event) {
+                    public boolean onTouch(View v, MotionEvent event)
+                    {
 
                         if(event.getAction() == MotionEvent.ACTION_UP)
                         {
+                            for(ScrollBar s : scrollBars)
+                                s.setClear();
+
+                            GetDots getDots = new GetDots();
+                            getDots.execute(Integer.toString(index));
+
+                            main.removeView(confirm);
+                            main.removeView(later);
+
+                            ImageView another = new ImageView(getApplicationContext());
+                            another.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 157)
+                                                        .addRules(RelativeLayout.ALIGN_PARENT_BOTTOM)
+                                                        .addRules(RelativeLayout.CENTER_HORIZONTAL)
+                            );
+                            another.setBackground(getResources().getDrawable(R.drawable.another));
+                            another.setOnTouchListener(new View.OnTouchListener() {
+                                @Override
+                                public boolean onTouch(View v, MotionEvent event) {
+
+                                    if(event.getAction() == MotionEvent.ACTION_UP)
+                                    {
+                                        startActivity(new Intent(Activity_Result.this, Activity_Main.class));
+                                        finish();
+                                    }
+
+                                    return true;
+                                }
+                            });
+                            main.addView(another);
+
                             UpLoad upLoad = new UpLoad();
                             UpLoad upLoad2 = new UpLoad();
                             UpLoad upLoad3 = new UpLoad();
@@ -229,6 +288,71 @@ public class Activity_Result extends Activity {
             }catch (JSONException e){
                 e.printStackTrace();
             }
+        }
+
+        public void show_later()
+        {
+            RelativeLayout block = new RelativeLayout(getApplicationContext());
+            block.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            block.setBackgroundColor(Color.argb(216, 35, 31, 32));
+            main.addView(block);
+            block.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
+
+            ImageView back = new ImageView(getApplicationContext());
+            back.setBackground(getResources().getDrawable(R.drawable.btn_back_agree));
+            back.setLayoutParams(new YousParameter(19,37).setMargin(65,0));
+            block.addView(back);
+            back.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    if(event.getAction() == MotionEvent.ACTION_UP)
+                    {
+                        startActivity(new Intent(Activity_Result.this, Activity_Main.class));
+                        finish();
+                    }
+                    return true;
+                }
+            });
+
+
+            YousTextView text = new YousTextView(getApplicationContext());
+            text.setTextSize(50);
+            text.setText("알겠어,\n바로 답하긴\n어려운 이슈지..\n\n\n조금 더\n시간을 가지고\n생각해볼래\n나중에 알람을 줘도\n놀라지 않기~");
+            text.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                    .addRules(RelativeLayout.CENTER_HORIZONTAL)
+                    .setMargin(0, 200)
+            );
+            text.setLineSpacing(0, 1.3f);
+             text.setTextColor(Color.WHITE);
+            text.setGravity(Gravity.CENTER);
+            block.addView(text);
+
+            ImageView another = new ImageView(getApplicationContext());
+            another.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 157)
+                    .addRules(RelativeLayout.ALIGN_PARENT_BOTTOM)
+                    .addRules(RelativeLayout.CENTER_HORIZONTAL)
+            );
+            another.setBackground(getResources().getDrawable(R.drawable.btn_later));
+            another.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    if(event.getAction() == MotionEvent.ACTION_UP)
+                    {
+                        startActivity(new Intent(Activity_Result.this, Activity_Main.class));
+                        finish();
+                    }
+
+                    return true;
+                }
+            });
+            block.addView(another);
         }
     }
 
@@ -284,6 +408,94 @@ public class Activity_Result extends Activity {
             }
 
         }
+    }
+
+    public class GetDots extends AsyncTask<String, Integer,String> {
+
+        private JSONArray ja;
+        private String index;
+
+        @Override
+        protected String doInBackground(String... params) {
+            StringBuilder jsonHtml = new StringBuilder();
+            try{
+
+                index = params[0];
+                URL url = new URL("http://119.202.36.218/yous/php/get_position.php");
+
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+
+                if(conn != null){
+                    conn.setConnectTimeout(10000);
+                    conn.setUseCaches(false);
+
+                    if(conn.getResponseCode() == HttpURLConnection.HTTP_OK)
+                    {
+                        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+
+                        for(;;)
+                        {
+
+                            String line = br.readLine();
+                            if(line == null) break;
+
+                            jsonHtml.append(line + "\n");
+                        }
+                        br.close();
+                    }
+                    conn.disconnect();
+                }
+            } catch(Exception ex){
+                ex.printStackTrace();
+            }
+
+            return jsonHtml.toString();
+
+        }
+
+        protected void onPostExecute(String str){
+
+            String name;
+
+            try{
+                JSONObject root = new JSONObject(str);
+                ja = root.getJSONArray("result"); //get the JSONArray which I made in the php file. the name of JSONArray is "results"
+
+                for(int i=0; i<ja.length(); i++)
+                {
+                    JSONObject j = ja.getJSONObject(i);
+
+                    if(j.getString("total_index").equals(index))
+                    {
+                        try {
+                            int idx = Integer.parseInt(j.getString("num_index"));
+                            float position = Float.parseFloat(j.getString("rate"));
+
+                            scrollBars[idx].addDot(position);
+
+                        }catch (Exception e)
+                        {
+
+                        }
+                    }
+                }
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        public JSONArray getData()
+        {
+            return this.ja;
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, Activity_Main.class));
+        finish();
     }
 
 }

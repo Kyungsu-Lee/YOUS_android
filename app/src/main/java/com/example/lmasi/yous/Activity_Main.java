@@ -48,6 +48,8 @@ public class Activity_Main extends Activity {
                             );
                            */
 
+        Log.e("ID ::: ", DbResource.get_cId());
+
 
         ImageView card = new ImageView(getApplicationContext());
         card.setBackground(getResources().getDrawable(R.drawable.test1));
@@ -63,7 +65,7 @@ public class Activity_Main extends Activity {
 
                 if(event.getAction() == MotionEvent.ACTION_UP)
                 {
-                    startActivity(new Intent(Activity_Main.this, Activity_Summary.class).putExtra("title", "노홍철 무한도전 복귀"));
+                    startActivity(new Intent(Activity_Main.this, Activity_Summary.class).putExtra("title", "노홍철 무한도전 복귀").putExtra("index", 0));
                     finish();
                 }
 
@@ -88,7 +90,7 @@ public class Activity_Main extends Activity {
 
                 if(event.getAction() == MotionEvent.ACTION_UP)
                 {
-                    startActivity(new Intent(Activity_Main.this, Activity_Summary.class).putExtra("title", "혼전동거"));
+                    startActivity(new Intent(Activity_Main.this, Activity_Summary.class).putExtra("title", "혼전동거").putExtra("index", 1));
                     finish();
                 }
 
@@ -146,23 +148,27 @@ public class Activity_Main extends Activity {
         });
 
 
+        RelativeLayout titleLayout = new RelativeLayout(getApplicationContext());
+        titleLayout.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 134));
+        titleLayout.setId(titleLayout.hashCode());
+        main.addView(titleLayout);
 
 
         menu = new ImageView(getApplicationContext());
         menu.setBackground(getResources().getDrawable(R.drawable.menu_main));
-        menu.setLayoutParams(new YousParameter(38, 20).setMargin(44, 47));
-        main.addView(menu);
+        menu.setLayoutParams(new YousParameter(38,20).addRules(RelativeLayout.CENTER_VERTICAL).setMargin(65,0));
+        titleLayout.addView(menu);
 
         logo = new ImageView(getApplicationContext());
         logo.setBackground(getResources().getDrawable(R.drawable.logo_main));
-        logo.setLayoutParams(new YousParameter(90, 23).setMargin(0, 44).addRules(RelativeLayout.CENTER_HORIZONTAL));
-        main.addView(logo);
+        logo.setLayoutParams(new YousParameter(90, 23).addRules(RelativeLayout.CENTER_IN_PARENT).setMargin(65,0));
+        titleLayout.addView(logo);
 
         search = new ImageView(getApplicationContext());
         search.setBackground(getResources().getDrawable(R.drawable.search_main));
-        search.setLayoutParams(new YousParameter(32, 33).addRules(RelativeLayout.ALIGN_PARENT_RIGHT).setMargin(0, 47, 44, 0));
-        main.addView(search);
-        search.setOnTouchListener(new View.OnTouchListener() {
+        search.setLayoutParams(new YousParameter(32,33).addRules(RelativeLayout.CENTER_VERTICAL).addRules(RelativeLayout.ALIGN_PARENT_RIGHT).setMargin(0, 0, 65, 0));
+        titleLayout.addView(search);
+        titleLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 

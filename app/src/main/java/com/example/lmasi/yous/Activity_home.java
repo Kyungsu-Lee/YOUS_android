@@ -32,6 +32,9 @@ public class Activity_home extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setTheme(android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
