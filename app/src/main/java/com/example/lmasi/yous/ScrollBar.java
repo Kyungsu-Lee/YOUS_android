@@ -30,9 +30,21 @@ public class ScrollBar extends RelativeLayout {
     private final int DEFAULT_CONTENT_SIZE    = 30;
     private final int padding                 = 20;
 
-    public ScrollBar(Context context, char alphabet, String top, final String bottom)
+    private int local_index;
+
+    public int getLocal_index() {
+        return local_index;
+    }
+
+    public void setLocal_index(int local_index) {
+        this.local_index = local_index;
+    }
+
+    public ScrollBar(Context context, char alphabet, String top, final String bottom, int local_index)
     {
         super(context);
+
+        setLocal_index(local_index);
 
         this.top = new YousTextView(getContext());
         this.top.setText(top);

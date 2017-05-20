@@ -3,6 +3,7 @@ package com.example.lmasi.yous;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +13,9 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
@@ -27,6 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 /**
  * Created by lmasi on 2017. 5. 15..
@@ -135,12 +139,13 @@ public class Activity_Result extends Activity {
     public class MyAsyncTask extends AsyncTask<String, Integer,String> {
 
         private JSONArray ja;
+        private  int index;
 
         @Override
-        protected String doInBackground(String... urls) {
+        protected String doInBackground(String... params) {
             StringBuilder jsonHtml = new StringBuilder();
             try{
-
+                index = Integer.parseInt(params[0]);
                 URL url = new URL("http://119.202.36.218/yous/php/get_scrollName.php");
 
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -184,6 +189,39 @@ public class Activity_Result extends Activity {
                 JSONObject root = new JSONObject(str);
                 ja = root.getJSONArray("result");
 
+                final ArrayList<String> top = new ArrayList<>();
+                ArrayList<String> bottom = new ArrayList<>();
+
+                for(int i=0; i< ja.length(); i++)
+                {
+                    if(ja.getJSONObject(i).getString("total_index").equals(Integer.toString(index)))
+                    {
+                        top.add(ja.getJSONObject(i).getString("top"));
+                        bottom.add(ja.getJSONObject(i).getString("bottom"));
+                    }
+                }
+
+                LinearLayout linearLayout = new LinearLayout(getApplicationContext());
+                linearLayout.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                        .addRules(RelativeLayout.CENTER_HORIZONTAL)
+                );
+                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                linearLayout.setWeightSum(top.size());
+                scrolls.addView(linearLayout);
+
+                scrollBars = new ScrollBar[top.size()];
+                for(int i=0; i<scrollBars.length; i++)
+                {
+                    scrollBars[i] = new ScrollBar(getApplicationContext(), (char)('a' + i), top.get(i), bottom.get(i), i);
+                    scrollBars[i].setId(scrollBars[i].hashCode());
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.gravity = Gravity.CENTER;
+                    params.weight = 1;
+                    scrollBars[i].setLayoutParams(params);
+                    linearLayout.addView(scrollBars[i]);
+                }
+
+          /*
                 final ScrollBar scrollBar2 = new ScrollBar(getApplicationContext(), 'b', ja.getJSONObject(1).getString("top"), ja.getJSONObject(1).getString("bottom"));
                 scrollBar2.setId(scrollBar2.hashCode());
                 scrolls.addView(scrollBar2.addRule(ReferenceBox.CENTER_HORIZONTAL));
@@ -207,7 +245,7 @@ public class Activity_Result extends Activity {
                 scrollBars[0] = scrollBar;
                 scrollBars[1] = scrollBar2;
                 scrollBars[2] = scrollBar3;
-
+*/
 
                 final ImageView later = new ImageView(getApplicationContext());
                 later.setBackground(getResources().getDrawable(R.drawable.later));
@@ -273,12 +311,13 @@ public class Activity_Result extends Activity {
                             });
                             main.addView(another);
 
-                            UpLoad upLoad = new UpLoad();
-                            UpLoad upLoad2 = new UpLoad();
-                            UpLoad upLoad3 = new UpLoad();
-                            upLoad.execute(Integer.toString(index), "0", Integer.toString(scrollBar.getRate()));
-                            upLoad2.execute(Integer.toString(index), "1", Integer.toString(scrollBar2.getRate()));
-                            upLoad3.execute(Integer.toString(index), "2", Integer.toString(scrollBar3.getRate()));
+                            UpLoad[] upLoad = new UpLoad[top.size()];
+                            for(int i=0; i < upLoad.length; i++)
+                            {
+                                upLoad[i] = new UpLoad();
+                                upLoad[i].execute(Integer.toString(index), "" + i, Integer.toString(scrollBars[i].getRate()));
+                            }
+
                         }
 
                         return true;

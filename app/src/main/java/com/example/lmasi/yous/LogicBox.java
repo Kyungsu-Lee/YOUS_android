@@ -101,12 +101,20 @@ public class LogicBox extends RelativeLayout {
                             if(line == null) break;
 
                             Log.d("aaaa", line);
+                            if(line.equals("=.="))
+                            {
+                                contents += line;
+                                continue;
+                            }
+
                             contents += line + "\n\n ";
                         }
                         br.close();
                     }
                     conn.disconnect();
                     contentss = contents.split("=.=");
+                    for(int i=0; i<contentss.length; i++)
+                        contentss[i] = replaceLast(contentss[i], "\n\n", "");
                 }
 
             } catch(Exception ex){

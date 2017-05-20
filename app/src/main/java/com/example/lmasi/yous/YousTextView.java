@@ -5,6 +5,10 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.TypefaceSpan;
 import android.util.TypedValue;
 import android.widget.TextView;
 
@@ -29,6 +33,20 @@ public class YousTextView extends TextView {
     }
 
     public void setTextWithHandler(final String str)
+    {
+        hd = new Handler(Looper.getMainLooper())
+        {
+            @Override
+            public void handleMessage(Message msg) {
+
+                setText(str);
+            }
+        };
+
+        hd.sendEmptyMessageDelayed(0, 10);
+    }
+
+    public void setTextWithHandler(final Spanned str)
     {
         hd = new Handler(Looper.getMainLooper())
         {

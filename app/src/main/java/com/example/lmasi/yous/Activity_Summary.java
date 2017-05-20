@@ -7,6 +7,10 @@ import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -29,7 +33,7 @@ public class Activity_Summary extends Activity {
 
     YousTextView search_title;
     YousTextView search_text;
-    YousTextView recent_text;
+    DateBox recent_text;
 
     String title;
     int index;
@@ -123,14 +127,53 @@ public class Activity_Summary extends Activity {
 
         search_title = new YousTextView(getApplicationContext());
         search_title.setTextSize(32);
-        search_title.setText("노홍철 음주운전, 그리고 무한도전 복귀");
         search_title.setLayoutParams(new YousParameter(600, ViewGroup.LayoutParams.WRAP_CONTENT)
-                .setMargin(0, 20, 0, 0) // 위아래옆 패딩 동일하게!
+                .setMargin(0, 0, 0, 0) // 위아래옆 패딩 동일하게!
         );
         search_title.setId(search_title.hashCode());
         search_title.setTypeface(YousResource.KOPUB_MID);
         search_title.setTextColor(Color.rgb(102, 102, 102));
         searchd.addView(search_title);
+        new Thread()
+        {
+            private StringBuilder builder;
+
+            @Override
+            public void run() {
+
+                try {
+                    builder = new StringBuilder("");
+                    URL url = new URL("http://119.202.36.218/yous/content/texts/" + index + "/title");
+                    BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+
+                    String str;
+                    while((str = br.readLine()) != null)
+                    {
+                        builder.append(str + "\n");
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+                String text = builder.toString();
+                text = replaceLast(text, "\n", "");
+                search_title.setTextWithHandler(text);
+            }
+
+            private String replaceLast(String string, String toReplace, String replacement)
+            {
+                int pos = string.lastIndexOf(toReplace);
+
+                if (pos > -1) {
+                    return string.substring(0, pos)+ replacement + string.substring(pos +   toReplace.length(), string.length());
+                } else {
+                    return string;
+                }
+            }
+
+        }.start();
 
         search_text = new YousTextView(getApplicationContext());
         search_text.setTextSize(28);
@@ -166,8 +209,22 @@ public class Activity_Summary extends Activity {
                     e.printStackTrace();
                 }
 
-                search_text.setTextWithHandler(builder.toString());
+                String text = builder.toString();
+                text = replaceLast(text, "\n", "");
+                search_text.setTextWithHandler(text);
             }
+
+            private String replaceLast(String string, String toReplace, String replacement)
+            {
+                int pos = string.lastIndexOf(toReplace);
+
+                if (pos > -1) {
+                    return string.substring(0, pos)+ replacement + string.substring(pos +   toReplace.length(), string.length());
+                } else {
+                    return string;
+                }
+            }
+
         }.start();
 
         ImageView line2 = new ImageView(getApplicationContext());
@@ -180,7 +237,7 @@ public class Activity_Summary extends Activity {
         line2.setId(line2.hashCode());
         scrollView.addView(line2);
 
-        YousTextView recent = new YousTextView(getApplicationContext());
+        final YousTextView recent = new YousTextView(getApplicationContext());
         recent.setText("정황을 간단히 보자면");
         recent.setTextSize(32);
         recent.setTypeface(YousResource.KOPUB_MID);
@@ -193,44 +250,18 @@ public class Activity_Summary extends Activity {
         recent.setTextColor(Color.parseColor("#666666"));
         scrollView.addView(recent);
 
-        recent_text = new YousTextView(getApplicationContext());
-        recent_text.setTextSize(27);
+        recent_text = new DateBox(getApplicationContext(), index);
+       // recent_text.setTextSize(27);
         recent_text.setLayoutParams(new YousParameter(600, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.CENTER_IN_PARENT)
                 .addRules(RelativeLayout.BELOW, recent.getId())
                 .setMargin(0, 50)
         );
-        recent_text.setGravity(Gravity.CENTER);
-        recent_text.setTextColor(Color.rgb(102, 102, 102));
+      //  recent_text.setGravity(Gravity.CENTER);
+     //   recent_text.setTextColor(Color.rgb(102, 102, 102));
         recent_text.setId(recent_text.hashCode());
-        recent_text.setLineSpacing(0, 1.45f);
+     //   recent_text.setLineSpacing(0, 1.45f);
         scrollView.addView(recent_text);
-        new Thread()
-        {
-            private StringBuilder builder;
-
-            @Override
-            public void run() {
-
-                try {
-                    builder = new StringBuilder("");
-                    URL url = new URL("http://119.202.36.218/yous/content/texts/" + index + "/recent");
-                    BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-
-                    String str;
-                    while((str = br.readLine()) != null)
-                    {
-                        builder.append(str + "\n");
-                    }
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-
-                recent_text.setTextWithHandler(builder.toString());
-            }
-        }.start();
 
         ImageView btn_ok = new ImageView(getApplicationContext());  //title과 사이즈 동일하게
         btn_ok.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 157)
@@ -268,3 +299,4 @@ public class Activity_Summary extends Activity {
         finish();
     }
 }
+
