@@ -40,18 +40,24 @@ public class Activity_Main extends Activity {
         Rmain = (RelativeLayout)findViewById(R.id.main);
         Rmain.setBackgroundColor(Color.WHITE);
 
-        yScrollView main = new yScrollView(getApplicationContext());
+        final yScrollView main = new yScrollView(getApplicationContext());
         main.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        /*
-        CardView card = new CardView(getApplicationContext(), "img1.png", "노홍철", "찬성-반대");
-                            );
-                           */
+
+        ContentBox contentBox = new ContentBox(getApplicationContext()){
+            @Override
+            public void clickAction() {
+                finish();
+            }
+        };
+        contentBox.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        main.addView(contentBox);
+
 
         Log.e("ID ::: ", DbResource.get_cId());
 
 
-        ImageView card = new ImageView(getApplicationContext());
+ /*       ImageView card = new ImageView(getApplicationContext());
         card.setBackground(getResources().getDrawable(R.drawable.test1));
         card.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 400)
                         .addRules(RelativeLayout.CENTER_HORIZONTAL)
@@ -146,6 +152,7 @@ public class Activity_Main extends Activity {
                 return true;
             }
         });
+        */
 
 
         RelativeLayout titleLayout = new RelativeLayout(getApplicationContext());
@@ -158,6 +165,42 @@ public class Activity_Main extends Activity {
         menu.setBackground(getResources().getDrawable(R.drawable.menu_main));
         menu.setLayoutParams(new YousParameter(38,20).addRules(RelativeLayout.CENTER_VERTICAL).setMargin(65,0));
         titleLayout.addView(menu);
+        menu.setOnTouchListener(new View.OnTouchListener() {
+
+            RelativeLayout relativeLayout;
+            ImageView menu_box;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if(event.getAction() == MotionEvent.ACTION_UP)
+                {
+                   relativeLayout = new RelativeLayout(getApplicationContext());
+                    relativeLayout.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                    relativeLayout.setBackgroundColor(Color.argb(160, 0, 0, 0));
+                    Rmain.addView(relativeLayout);
+                    relativeLayout.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+
+                            if(event.getAction() == MotionEvent.ACTION_UP){
+                                Rmain.removeView(relativeLayout);
+                                relativeLayout.removeView(menu_box);
+                            }
+
+                            return true;
+                        }
+                    });
+
+                    menu_box = new ImageView(getApplicationContext());
+                    menu_box.setBackground(getResources().getDrawable(R.drawable.menu_box));
+                    menu_box.setLayoutParams(new YousParameter(300, ViewGroup.LayoutParams.MATCH_PARENT));
+                    relativeLayout.addView(menu_box);
+                }
+
+                return true;
+            }
+        });
 
         logo = new ImageView(getApplicationContext());
         logo.setBackground(getResources().getDrawable(R.drawable.logo_main));

@@ -1,7 +1,12 @@
 package com.example.lmasi.yous;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,41 +19,93 @@ import android.widget.TextView;
 public class CardView extends RelativeLayout {
 
     ImageView img;
-    TextView tv_title;
-    TextView tv_subtitle;
+    YousTextView tv_title;
+    YousTextView tv_subtitle;
 
-    public CardView(Context context, String fileName, String title, String subTitle) {
+    private String title;
+    private int index;
+
+    private int color;
+
+    private YousParameter params;
+
+    public YousParameter getParams() {
+        return params;
+    }
+
+    public void setParams(YousParameter params) {
+        this.params = params;
+    }
+
+    public CardView(final Context context, String title, String subTitle, int index, int color) {
         super(context);
 
+        this.title = title;
+        this.index = index;
+
+        RelativeLayout block = new RelativeLayout(getContext());
+        block.setBackgroundColor(Color.argb(165, 0, 0, 0));
+        block.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 400));
+        this.addView(block);
+
         img = new ImageView(getContext());
-        img.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        img.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 400));
         img.setImageBitmap(new ImageRoader().
-                getBitmapImg("/yous/img/" + fileName));
+                getBitmapImg("/yous/img/" + index));
+        img.setScaleType(ImageView.ScaleType.FIT_XY);
         this.addView(img);
 
-        tv_title = new TextView(getContext());
+        block.bringToFront();
+
+        tv_title = new YousTextView(getContext());
         tv_title.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                                     .addRules(CENTER_IN_PARENT)
         );
         tv_title.setText(title);
+        tv_title.setTextSize(35);
+        tv_title.setTextColor(color);
         tv_title.setId(tv_title.hashCode());
-        this.addView(tv_title);
+        block.addView(tv_title);
 
-        tv_subtitle = new TextView(getContext());
+        tv_subtitle = new YousTextView(getContext());
         tv_subtitle.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(CENTER_HORIZONTAL)
                 .addRules(RelativeLayout.BELOW, tv_title.getId())
                 .setMargin(0, 10, 0, 0)
         );
         tv_subtitle.setText(subTitle);
+        tv_subtitle.setTextColor(Color.WHITE);
+        tv_subtitle.setTextSize(28);
         tv_subtitle.setId(tv_subtitle.hashCode());
-        this.addView(tv_subtitle);
+        block.addView(tv_subtitle);
 
 
-        RelativeLayout block = new RelativeLayout(getContext());
-        block.setBackgroundColor(Color.argb(165, 0, 0, 0));
-        block.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        this.addView(block);
+
+
+        this.params = new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 400);
+        params.addRules(RelativeLayout.CENTER_HORIZONTAL);
+
+        this.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if(event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    getContext().startActivity(new Intent(getContext(), Activity_Summary.class)
+                            .putExtra("title", CardView.this.title)
+                            .putExtra("index", CardView.this.index)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    );
+
+                    clickAction();
+                }
+
+
+
+                return true;
+            }
+        });
+
     }
 
     public void setTitleColor(int color)
@@ -61,5 +118,9 @@ public class CardView extends RelativeLayout {
         this.tv_subtitle.setTextColor(color);
     }
 
+    public void clickAction()
+    {
+
+    }
 
 }

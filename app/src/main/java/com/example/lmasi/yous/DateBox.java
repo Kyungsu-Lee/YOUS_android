@@ -58,18 +58,22 @@ public class DateBox extends RelativeLayout {
 
 
 
-            } catch(Exception ex){
+            } catch(Exception ex) {
                 ex.printStackTrace();
             }
 
-            String[] split = builder.toString().split("\n");
-            for(String s : split)
-            {
-                String date = s.split("::")[0];
-                String content = s.split("::")[1];
+            try {
+                String[] split = builder.toString().split("\n");
+                for (String s : split) {
+                    String date = s.split("::")[0];
+                    String content = s.split("::")[1];
 
-                dates.add(date);
-                contents.add(content);
+                    dates.add(date);
+                    contents.add(content);
+                }
+            }catch (Exception e)
+            {
+                e.printStackTrace();
             }
 
             return null;

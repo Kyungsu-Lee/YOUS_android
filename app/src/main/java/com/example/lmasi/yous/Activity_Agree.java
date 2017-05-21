@@ -48,6 +48,7 @@ public class Activity_Agree extends Activity {
         ImageView title_img = new ImageView(getApplicationContext());
         title_img.setImageBitmap(new ImageRoader().getBitmapImg("/yous/content/img/"+ index + "/agree.png"));
         title_img.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        title_img.setScaleType(ImageView.ScaleType.FIT_XY);
         title_layout.addView(title_img);
 
         ImageView title_box = new ImageView(getApplicationContext());
