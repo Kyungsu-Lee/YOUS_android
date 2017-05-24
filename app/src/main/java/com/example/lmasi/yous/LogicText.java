@@ -51,7 +51,7 @@ public class LogicText extends RelativeLayout {
 
         this.title = new YousTextView(getContext());
         this.title.setTextSize(DEFALUT_TITLE_SIZE);
-        this.title.setText(Character.toString((char)('a' + index)) +". " + title);
+        this.title.setText(Character.toString((char)('a' + index)) +"  " + title);
         this.title.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                                     .addRules(RelativeLayout.CENTER_HORIZONTAL)
         );

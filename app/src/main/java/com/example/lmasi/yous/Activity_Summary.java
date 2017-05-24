@@ -37,6 +37,8 @@ public class Activity_Summary extends Activity {
 
     String title;
     int index;
+    String title_agree;
+    String title_disagree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,9 @@ public class Activity_Summary extends Activity {
 
         title = "" + getIntent().getStringExtra("title");
         index = getIntent().getIntExtra("index", 0);
+        title_agree = getIntent().getStringExtra("agree");
+        title_disagree = getIntent().getStringExtra("disagree");
+
 
         main = (RelativeLayout)findViewById(R.id.main);
         main.setBackgroundColor(Color.rgb(255, 255,255));
@@ -263,13 +268,14 @@ public class Activity_Summary extends Activity {
      //   recent_text.setLineSpacing(0, 1.45f);
         scrollView.addView(recent_text);
 
-        ImageView btn_ok = new ImageView(getApplicationContext());  //title과 사이즈 동일하게
+        RelativeLayout btn_ok = new RelativeLayout(getApplicationContext());  //title과 사이즈 동일하게
         btn_ok.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 157)
                 .addRules(RelativeLayout.CENTER_HORIZONTAL)
                 .addRules(RelativeLayout.BELOW, recent_text.getId())
                 .setMargin(0, 80)
         );
-        btn_ok.setBackground(getResources().getDrawable(R.drawable.btn_ok));
+      //  btn_ok.setBackground(getResources().getDrawable(R.drawable.btn_ok));
+        btn_ok.setBackgroundColor(Color.parseColor("#F2F2F2"));
         btn_ok.setId(btn_ok.getId());
         scrollView.addView(btn_ok);
         btn_ok.setOnTouchListener(new View.OnTouchListener() {
@@ -278,7 +284,12 @@ public class Activity_Summary extends Activity {
 
                 if(event.getAction() == MotionEvent.ACTION_UP)
                 {
-                    startActivity(new Intent(Activity_Summary.this, Activity_Agree.class).putExtra("title", title).putExtra("index", index));
+                    startActivity(new Intent(Activity_Summary.this, Activity_Agree.class)
+                            .putExtra("title", title)
+                            .putExtra("index", index)
+                            .putExtra("agree", title_agree)
+                            .putExtra("disagree", title_disagree)
+                    );
                     finish();
                 }
 
@@ -286,6 +297,16 @@ public class Activity_Summary extends Activity {
             }
         });
 
+        YousTextView txt_ok = new YousTextView(getApplicationContext());
+        txt_ok.setText("찬찬히 살펴가볼까?");
+        txt_ok.setTextSize(50);
+        txt_ok.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                .addRules(RelativeLayout.CENTER_IN_PARENT)
+                .setMargin(0, 80)
+        );
+        txt_ok.setId(search.hashCode());
+        txt_ok.setTextColor(Color.rgb(102, 102, 102));
+        btn_ok.addView(txt_ok);
 
 
 

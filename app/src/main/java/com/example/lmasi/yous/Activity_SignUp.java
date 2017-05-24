@@ -124,12 +124,14 @@ public class Activity_SignUp extends Activity {
 
 
         //EditText
-        etext = new EditText(getApplicationContext());
+        etext = new YousEditText(getApplicationContext());
         etext.setLayoutParams(new   YousParameter(479, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.CENTER_HORIZONTAL)
                 .setMargin(0, 553, 0, 0)
         );
         etext.setHint("휴대전화번호");
+        etext.setHintTextColor(Color.parseColor("#666666"));
+        etext.setTextColor(Color.parseColor("#666666"));
         main.addView(etext);
 
 

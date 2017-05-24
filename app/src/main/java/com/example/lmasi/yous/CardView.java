@@ -22,6 +22,9 @@ public class CardView extends RelativeLayout {
     YousTextView tv_title;
     YousTextView tv_subtitle;
 
+    String agree;
+    String disagree;
+
     private String title;
     private int index;
 
@@ -37,22 +40,28 @@ public class CardView extends RelativeLayout {
         this.params = params;
     }
 
-    public CardView(final Context context, String title, String subTitle, int index, int color) {
+    public String getTitle() {
+        return title;
+    }
+
+    public CardView(final Context context, String title, String subTitle, int index, int color, String agree, String disagree) {
         super(context);
 
         this.title = title;
         this.index = index;
+        this.agree = agree;
+        this.disagree = disagree;
 
         RelativeLayout block = new RelativeLayout(getContext());
-        block.setBackgroundColor(Color.argb(165, 0, 0, 0));
+        block.setBackgroundColor(Color.argb(130, 0, 0, 0));
         block.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 400));
         this.addView(block);
 
         img = new ImageView(getContext());
         img.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 400));
         img.setImageBitmap(new ImageRoader().
-                getBitmapImg("/yous/img/" + index));
-        img.setScaleType(ImageView.ScaleType.FIT_XY);
+                getBitmapImg("/yous/content/img/yous/" + index + "/" + index + ".png"));
+        img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         this.addView(img);
 
         block.bringToFront();
@@ -94,6 +103,8 @@ public class CardView extends RelativeLayout {
                     getContext().startActivity(new Intent(getContext(), Activity_Summary.class)
                             .putExtra("title", CardView.this.title)
                             .putExtra("index", CardView.this.index)
+                            .putExtra("agree", CardView.this.agree)
+                            .putExtra("disagree", CardView.this.disagree)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     );
 

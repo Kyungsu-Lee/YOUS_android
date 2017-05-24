@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 public class YousTextView extends TextView {
 
+    boolean lineFlag = true;
+
     public YousTextView(Context context) {
         super(context);
 
@@ -63,6 +65,14 @@ public class YousTextView extends TextView {
     @Override
     public void setText(CharSequence text, BufferType type)
     {
-        super.setText(text.toString().replace(" ", "\u00A0"), type);
+        if(lineFlag)
+            super.setText(text.toString().replace(" ", "\u00A0"), type);
+        else
+            super.setText(text, type);
+    }
+
+    public void setLineFlag(boolean lineFlag)
+    {
+        this.lineFlag = lineFlag;
     }
 }

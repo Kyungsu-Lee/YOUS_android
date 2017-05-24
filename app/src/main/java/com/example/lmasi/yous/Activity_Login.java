@@ -25,6 +25,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.Profile;
 
 /**
  * Created by lmasi on 2017. 5. 12..
@@ -77,8 +78,8 @@ public class Activity_Login extends Activity {
 
         //logo
         ImageView logo = new ImageView(getApplicationContext());
-        logo.setBackground(getResources().getDrawable(R.drawable.logo_signup));
-        logo.setLayoutParams(new YousParameter(116,31).addRules(RelativeLayout.CENTER_HORIZONTAL).setMargin(0, 72));
+        logo.setBackground(getResources().getDrawable(R.drawable.log_in_logo));
+        logo.setLayoutParams(new YousParameter(87,30).addRules(RelativeLayout.CENTER_HORIZONTAL).setMargin(0, 72));
         main.addView(logo);
 
 
@@ -150,7 +151,8 @@ public class Activity_Login extends Activity {
                         public void onSuccess(final LoginResult result) {
 
                             GraphRequest request;
-                            request = GraphRequest.newMeRequest(result.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                            request = GraphRequest.newMeRequest(result.getAccessToken(), new GraphRequest.GraphJSONObjectCallback()
+                            {
 
                                 @Override
                                 public void onCompleted(JSONObject user, GraphResponse response) {
@@ -169,10 +171,7 @@ public class Activity_Login extends Activity {
                             request.setParameters(parameters);
                             request.executeAsync();
 
-
-
                             startActivity(new Intent(Activity_Login.this, Activity_Main.class));
-                            finish();
                         }
 
                         @Override
@@ -196,7 +195,7 @@ public class Activity_Login extends Activity {
 
 
         //EditText
-        email = new EditText(getApplicationContext());
+        email = new YousEditText(getApplicationContext());
         email.setLayoutParams(new   YousParameter(527, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.CENTER_HORIZONTAL)
                 .setMargin(0, 513, 0, 0)
@@ -205,7 +204,7 @@ public class Activity_Login extends Activity {
         email.setHintTextColor(Color.argb(102, 102, 102, 102));
         main.addView(email);
 
-        pwd = new EditText(getApplicationContext());
+        pwd = new YousEditText(getApplicationContext());
         pwd.setLayoutParams(new   YousParameter(527, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.CENTER_HORIZONTAL)
                 .setMargin(0, 595, 0, 0)
@@ -227,5 +226,11 @@ public class Activity_Login extends Activity {
 
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }

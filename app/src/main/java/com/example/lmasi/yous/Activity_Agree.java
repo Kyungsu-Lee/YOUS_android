@@ -19,6 +19,8 @@ public class Activity_Agree extends Activity {
     RelativeLayout main;
     String title;
     int index;
+    String title_agree;
+    String title_disagree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,8 @@ public class Activity_Agree extends Activity {
 
         title = getIntent().getStringExtra("title");
         index = getIntent().getIntExtra("index", 0);
+        title_agree = getIntent().getStringExtra("agree");
+        title_disagree = getIntent().getStringExtra("disagree");
 
       //  title = "贊";
 
@@ -46,16 +50,27 @@ public class Activity_Agree extends Activity {
         scrollView.addView(title_layout);
 
         ImageView title_img = new ImageView(getApplicationContext());
-        title_img.setImageBitmap(new ImageRoader().getBitmapImg("/yous/content/img/"+ index + "/agree.png"));
+        title_img.setImageBitmap(new ImageRoader().getBitmapImg("/yous/content/img/yous/"+ index + "/agree.png"));
         title_img.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        title_img.setScaleType(ImageView.ScaleType.FIT_XY);
+        title_img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         title_layout.addView(title_img);
 
-        ImageView title_box = new ImageView(getApplicationContext());
-        title_box.setBackground(getResources().getDrawable(R.drawable.title_agree));
+        RelativeLayout title_box = new RelativeLayout(getApplicationContext());
+        title_box.setBackgroundColor(Color.argb(255/2, 0, 113, 188));
         title_box.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         title_layout.addView(title_box);
         title_layout.setId(title_layout.hashCode());
+
+
+        YousTextView titleTextView = new YousTextView(getApplicationContext());
+        titleTextView.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                                .addRules(RelativeLayout.CENTER_IN_PARENT)
+        );
+        titleTextView.setTextSize(125);
+        titleTextView.setTypeface(YousResource.KOPUB_MID);
+        titleTextView.setTextColor(Color.parseColor("#F2F2F2"));
+        title_layout.addView(titleTextView);
+        titleTextView.setText(title_agree);
 
         RelativeLayout titleLayout = new RelativeLayout(getApplicationContext());
         titleLayout.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, 134));
@@ -64,7 +79,7 @@ public class Activity_Agree extends Activity {
 
         //back btn
         ImageView back = new ImageView(getApplicationContext());
-        back.setBackground(getResources().getDrawable(R.drawable.btn_back_agree));
+        back.setBackground(getResources().getDrawable(R.drawable.btn_white_full));
         back.setLayoutParams(new YousParameter(19,37).addRules(RelativeLayout.CENTER_VERTICAL).setMargin(65,0));
         titleLayout.addView(back);
         back.setOnTouchListener(new View.OnTouchListener() {
@@ -73,7 +88,12 @@ public class Activity_Agree extends Activity {
 
                 if(event.getAction() == MotionEvent.ACTION_UP)
                 {
-                    startActivity(new Intent(Activity_Agree.this, Activity_Summary.class).putExtra("title", title).putExtra("index", index));
+                    startActivity(new Intent(Activity_Agree.this, Activity_Summary.class)
+                            .putExtra("title", title)
+                            .putExtra("index", index)
+                            .putExtra("agree", title_agree)
+                            .putExtra("disagree", title_disagree)
+                    );
                     finish();
                 }
                 return true;
@@ -98,8 +118,7 @@ public class Activity_Agree extends Activity {
 
         ImageView btn_disagree = new ImageView(getApplicationContext());
         btn_disagree.setLayoutParams(new YousParameter(185, 185)
-                                        .addRules(RelativeLayout.CENTER_VERTICAL)
-                                        .setMargin(750 - 185/2, 0, -1000, -1000)
+                                        .setMargin(750 - 185/2, 1333 * 2/ 4 + 100, -1000, -1000)
         );
         btn_disagree.setBackground(getResources().getDrawable(R.drawable.disagree));
         cover.addView(btn_disagree);
@@ -109,7 +128,11 @@ public class Activity_Agree extends Activity {
 
                 if(event.getAction() == MotionEvent.ACTION_UP)
                 {
-                    startActivity(new Intent(Activity_Agree.this, Activity_disagree.class).putExtra("title", title).putExtra("index", index));
+                    startActivity(new Intent(Activity_Agree.this, Activity_disagree.class)
+                            .putExtra("title", title)
+                            .putExtra("index", index)
+                            .putExtra("agree", title_agree)
+                            .putExtra("disagree", title_disagree));
                     overridePendingTransition(R.anim.slide_left, R.anim.slide_out_left);
                     finish();
                 }
@@ -132,7 +155,7 @@ public class Activity_Agree extends Activity {
         logicBox.setId(logicBox.hashCode());
         scrollView.addView(logicBox);
 
-        ReferenceBox referenceBox = new ReferenceBox(getApplicationContext(), index);
+        ReferenceBox referenceBox = new ReferenceBox(getApplicationContext(), index, true);
         referenceBox.setLayoutParams(new YousParameter(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.BELOW, logicBox.getId())
         );

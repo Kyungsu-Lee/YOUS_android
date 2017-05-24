@@ -35,6 +35,11 @@ public class LogicBox extends RelativeLayout {
 
     }
 
+    public int getSize()
+    {
+        return titles.length;
+    }
+
 
     // AsyncTask클래스는 항상 Subclassing 해서 사용 해야 함.
     // 사용 자료형은
@@ -49,7 +54,7 @@ public class LogicBox extends RelativeLayout {
 
             try
             {
-                URL url_title = new URL("http://119.202.36.218/yous/content/texts/" + params[0] + "/agree_title");
+                URL url_title = new URL("http://119.202.36.218/yous/content/texts/" + params[0] + "/" + params[1] + "_title");
                 HttpURLConnection conn = (HttpURLConnection)url_title.openConnection();
 
                 if(conn != null){
@@ -131,8 +136,11 @@ public class LogicBox extends RelativeLayout {
 
             logicTexts = new LogicText[titles.length];
 
+            for(int i=0; i<titles.length; i++)
+                Log.e("message", titles[i]);
 
-            for(int i=0; i<logicTexts.length; i++)
+
+            for(int i=0; i<titles.length; i++)
             {
                 logicTexts[i] = new LogicText(getContext(), titles[i], contentss[i], i);
                 logicTexts[i].setId(logicTexts[i].hashCode());

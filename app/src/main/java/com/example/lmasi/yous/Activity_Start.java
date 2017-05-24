@@ -90,6 +90,7 @@ public class Activity_Start extends Activity {
         }
 
         final boolean loginFlag = DbResource.get("login");
+        Log.e("login flag", Boolean.toString(loginFlag));
 
         Handler hd = new Handler()
         {

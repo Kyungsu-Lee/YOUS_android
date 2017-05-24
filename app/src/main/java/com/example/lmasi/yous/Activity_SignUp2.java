@@ -166,7 +166,8 @@ public class Activity_SignUp2 extends Activity {
                         public void onSuccess(final LoginResult result) {
 
                             GraphRequest request;
-                            request = GraphRequest.newMeRequest(result.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                            request = GraphRequest.newMeRequest(result.getAccessToken(), new GraphRequest.GraphJSONObjectCallback()
+                            {
 
                                 @Override
                                 public void onCompleted(JSONObject user, GraphResponse response) {
@@ -396,7 +397,7 @@ public class Activity_SignUp2 extends Activity {
         int padding = 20;
 
         //EditText
-        name = new EditText(getApplicationContext());
+        name = new YousEditText(getApplicationContext());
         name.setLayoutParams(new   YousParameter(527, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.CENTER_HORIZONTAL)
                 .addRules(RelativeLayout.ALIGN_TOP, sp.getId())
@@ -408,7 +409,7 @@ public class Activity_SignUp2 extends Activity {
         main.addView(name);
 
         //EditText
-        pwd = new EditText(getApplicationContext());
+        pwd = new YousEditText(getApplicationContext());
         pwd.setLayoutParams(new   YousParameter(527, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.CENTER_HORIZONTAL)
                 .addRules(RelativeLayout.ALIGN_TOP, name.getId())
@@ -420,7 +421,7 @@ public class Activity_SignUp2 extends Activity {
         main.addView(pwd);
 
         //EditText
-        email = new EditText(getApplicationContext());
+        email = new YousEditText(getApplicationContext());
         email.setLayoutParams(new   YousParameter(527, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .addRules(RelativeLayout.CENTER_HORIZONTAL)
                 .addRules(RelativeLayout.ALIGN_TOP, pwd.getId())

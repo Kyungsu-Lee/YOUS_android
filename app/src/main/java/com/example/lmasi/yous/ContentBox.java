@@ -1,5 +1,7 @@
 package com.example.lmasi.yous;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -19,9 +21,12 @@ import java.util.ArrayList;
 public class ContentBox extends RelativeLayout {
 
     private CardView[] cardViews;
+    private String searchTitle;
 
-    public ContentBox(Context context) {
+    public ContentBox(Context context, String searchTitle) {
         super(context);
+
+        this.searchTitle = searchTitle;
 
         MyAsyncTask myAsyncTask = new MyAsyncTask();
         myAsyncTask.execute("http://119.202.36.218/yous/titles");
@@ -34,8 +39,21 @@ public class ContentBox extends RelativeLayout {
 
     public class MyAsyncTask extends AsyncTask<String, Void, Void> {
 
+        ProgressDialog asyncDialog;
+
         ArrayList<String> titles = new ArrayList<>();
         ArrayList<String> colors = new ArrayList<>();
+        ArrayList<String> subtitle = new ArrayList<>();
+        ArrayList<String> agreeTitles = new ArrayList<>();
+        ArrayList<String> disagreeTitles = new ArrayList<>();
+        @Override
+        protected void onPreExecute() {
+         //   asyncDialog = new ProgressDialog(getContext());
+           // asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+          //  asyncDialog.show();
+
+            super.onPreExecute();
+        }
 
         @Override
         protected Void doInBackground(String... params) {
@@ -66,7 +84,10 @@ public class ContentBox extends RelativeLayout {
                             String[] tmp = line.split("::");
 
                             titles.add(tmp[0]);
-                            colors.add(tmp[1]);
+                            subtitle.add(tmp[1]);
+                            agreeTitles.add(tmp[2]);
+                            disagreeTitles.add(tmp[3]);
+                            colors.add(tmp[4]);
                         }
                         br.close();
                     }
@@ -87,11 +108,16 @@ public class ContentBox extends RelativeLayout {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            cardViews = new CardView[titles.size()];
 
-            for(int i=0; i< titles.size(); i++)
+            ArrayList<String> search_title = new ArrayList<>();
+            for(String s : titles)
+                if(s.indexOf(searchTitle) >= 0) search_title.add(s);
+
+            cardViews = new CardView[search_title.size()];
+
+            for(int i=0; i< search_title.size(); i++)
             {
-                cardViews[i] = new CardView(getContext(), titles.get(i), "찬성 - 반대", i, Color.parseColor("#"+colors.get(i)))
+                cardViews[i] = new CardView(getContext(), search_title.get(i), subtitle.get(i), titles.indexOf(search_title.get(i)), Color.parseColor("#"+colors.get(i)), agreeTitles.get(i), disagreeTitles.get(i))
                 {
                     @Override
                     public void clickAction() {
@@ -102,8 +128,10 @@ public class ContentBox extends RelativeLayout {
                 if(i >= 1) cardViews[i].setLayoutParams(cardViews[i].getParams().addRules(RelativeLayout.BELOW, cardViews[i-1].getId()));
                 ContentBox.this.addView(cardViews[i]);
             }
-
+           // asyncDialog.dismiss();
         }
+
+
 
 
         @Override
