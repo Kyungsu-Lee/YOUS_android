@@ -167,7 +167,7 @@ public class Activity_Result extends Activity {
 
 
         final RelativeLayout confirm = new RelativeLayout(getApplicationContext());
-        confirm.setBackground(getResources().getDrawable(R.drawable.btn_confirm));
+        confirm.setBackground(getResources().getDrawable(R.drawable.btn_confirm_final));
         confirm.setLayoutParams(new YousParameter(750/2, 141)
                 .addRules(RelativeLayout.ALIGN_PARENT_BOTTOM)
                 .addRules(RelativeLayout.RIGHT_OF, later.getId())

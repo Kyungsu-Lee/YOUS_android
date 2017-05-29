@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -119,6 +122,8 @@ public class Activity_Login extends Activity {
                         startActivity(new Intent(Activity_Login.this, Activity_Main.class));
                         finish();
                     }
+                    else
+                        Toast.makeText(getApplicationContext(), "ID 또는 비밀번호가 잘못되었습니다", Toast.LENGTH_LONG);
                 }
 
                 return true;
@@ -210,6 +215,8 @@ public class Activity_Login extends Activity {
         );
         pwd.setHint("비밀번호");
         main.addView(pwd);
+        pwd.setInputType( InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
+        pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
 
 

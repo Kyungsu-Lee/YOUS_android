@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -54,7 +56,7 @@ public class Activity_SignUp2 extends Activity {
     YousSpinner<String> sp_month;
     YousSpinner<String> sp_day;
 
-    int textSize = 23;
+    int textSize = 23;csee@handong.edu
 
     PHPDown phpDown;
 
@@ -123,15 +125,15 @@ public class Activity_SignUp2 extends Activity {
                             Toast.makeText(getApplicationContext(), "중복된 이메일 입니다.", Toast.LENGTH_SHORT).show();
                             return true;
                         }
+
+                        birth = sp_year.getSelectedItem().toString() + sp_month.getSelectedItem().toString() + sp_day.getSelectedItem().toString();
+                        insertToDatabase(email.getText().toString(), pwd.getText().toString(), name.getText().toString(), birth, sp.getSelectedItem().toString());
+                        finish();
+                        startActivity(new Intent(Activity_SignUp2.this, Activity_Main.class));
                     }catch (Exception e)
                     {
                         e.printStackTrace();
                     }
-
-                    birth = sp_year.getSelectedItem().toString() + sp_month.getSelectedItem().toString() + sp_day.getSelectedItem().toString();
-                    insertToDatabase(email.getText().toString(), pwd.getText().toString(), name.getText().toString(), birth, sp.getSelectedItem().toString());
-                    finish();
-                    startActivity(new Intent(Activity_SignUp2.this, Activity_Main.class));
                 }
 
                 return true;
@@ -419,6 +421,8 @@ public class Activity_SignUp2 extends Activity {
         pwd.setId(pwd.hashCode());
         pwd.setPadding((int)(padding * ScreenParameter.getScreenparam_x()), pwd.getPaddingTop(), pwd.getPaddingRight(), pwd.getPaddingBottom());
         main.addView(pwd);
+        pwd.setInputType( InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD );
+        pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
         //EditText
         email = new YousEditText(getApplicationContext());

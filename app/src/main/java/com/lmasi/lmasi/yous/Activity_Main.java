@@ -397,5 +397,7 @@ public class Activity_Main extends Activity {
     public void onBackPressed() {
         if(clicked)
             closeWindow();
+        else
+            super.onBackPressed();
     }
 }

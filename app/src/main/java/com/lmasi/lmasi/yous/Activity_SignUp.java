@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -86,6 +87,7 @@ public class Activity_SignUp extends Activity {
                     if((!clicked) && !checkPhoneNumber(etext.getText().toString()))
                     {
                             etext.setText("");
+                        etext.setInputType(InputType.TYPE_CLASS_NUMBER);
                             return true;
                     }
 
@@ -130,6 +132,7 @@ public class Activity_SignUp extends Activity {
         etext.setHint("휴대전화번호");
         etext.setHintTextColor(Color.parseColor("#666666"));
         etext.setTextColor(Color.parseColor("#666666"));
+        etext.setInputType(InputType.TYPE_CLASS_PHONE);
         main.addView(etext);
 
 
